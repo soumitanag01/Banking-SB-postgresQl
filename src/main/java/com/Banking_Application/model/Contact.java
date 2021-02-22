@@ -1,6 +1,5 @@
 package com.Banking_Application.model;
 
-import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -8,32 +7,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Transaction {
+@Data
+@Builder
+@Entity
+public class Contact {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="TX_ID")
+	@Column(name="CONTACT_ID")
 	private UUID id;
 	
-	private Long accountNumber;
+	private String emailId;
 	
-	@Temporal(TemporalType.TIME)
-	private Date txDateTime;
+	private String homePhone;
 	
-	private String txType;
-	
-	private Double txAmount;
+	private String workPhone;
+
 }

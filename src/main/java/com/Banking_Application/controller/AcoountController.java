@@ -1,8 +1,12 @@
 package com.Banking_Application.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,40 +14,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Banking_Application.model.Account;
-import com.Banking_Application.model.Customer;
+import com.Banking_Application.domain.AccountInformation;
+import com.Banking_Application.domain.TransactionDetails;
+import com.Banking_Application.domain.TransferDetails;
 import com.Banking_Application.service.BankingServiceImpl;
 
 @RestController
-@RequestMapping("Banking_Applicatin/account")
+@RequestMapping(path = "Banking_Application/account",  produces = MediaType.APPLICATION_JSON_VALUE)//consumes = MediaType.APPLICATION_JSON_VALUE,
 public class AcoountController {
 
 	@Autowired
-	private BankingServiceImpl bankingServiceImpl;
+	private BankingServiceImpl bankingService;
 
-	@PostMapping("/addCustomer")
-	public ResponseEntity<Object> addCustomer(@RequestBody Customer customerDetails) {
-
-		return bankingServiceImpl.addCustomer(customerDetails);
-
+	@CrossOrigin(origins = "http://localhost:3000")
+	@GetMapping(path = "/{accountNumber}")
+	public ResponseEntity<Object> getByAccountNumber(@PathVariable Long accountNumber) {
+		System.out.println("within getByAccountNumber: "+ accountNumber);
+		return bankingService.findByAccountNumber(accountNumber);
 	}
 
-	@PutMapping("/updateCustomer")
-	public ResponseEntity<Object> updateCustomerByCustId(@RequestBody Customer customerDetails,
-			@PathVariable Integer cust_id) {
-		return bankingServiceImpl.updateCustomer(customerDetails, cust_id);
+	@PostMapping(path = "/add/{accountNumber}")
+	public ResponseEntity<Object> addnewAccount(@RequestBody AccountInformation accountInformation,
+			@PathVariable("accountNumber") Long customerNumber) {
+		return bankingService.addNewAccount(accountInformation, customerNumber);
 	}
 
-	@DeleteMapping("/removeCustomer")
-	public ResponseEntity<Object> deleteCustomerByCustId(@PathVariable Integer cust_id) {
-
-		return bankingServiceImpl.deleteCustomer(cust_id);
+	@PutMapping(path = "/transfer/{customerNumber}")
+	public ResponseEntity<Object> getTransferDetails(@RequestBody TransferDetails transferDetails,
+			@PathVariable Long customerNumber) {
+		return bankingService.transferDetails(transferDetails, customerNumber);
 	}
 
-	@PutMapping("/addAccount")
-	public ResponseEntity<Object> addNewAccount(@RequestBody Account accountInformation, @PathVariable Integer cust_id) {
-
-		return bankingServiceImpl.addNewAccount(accountInformation, cust_id);
+	@CrossOrigin(origins = "http://localhost:3000")
+	@GetMapping(path = "/transactions/{accountNumber}")
+	public List<TransactionDetails> getTransactionByAccountNumber(@PathVariable Long accountNumber) {
+		return bankingService.findTransactionsByAccountNumber(accountNumber);
 	}
-
 }

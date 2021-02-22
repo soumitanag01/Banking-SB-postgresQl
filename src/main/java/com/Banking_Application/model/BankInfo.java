@@ -1,6 +1,5 @@
 package com.Banking_Application.model;
 
-import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
@@ -10,40 +9,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-public class Account {
+@Entity
+public class BankInfo {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ACCT_ID")
+	@Column(name="BANK_ID")
 	private UUID id;
 	
-	private Long accountNumber;
+	private String branchName;
+	
+	private Integer branchCode;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	private BankInfo bankInformation;
+	private Address branchAddress;
 	
-	private String accountStatus;
+	private Integer routingNumber;
 	
-	private String accountType;
-	
-	private Double accountBalance;
-    
-    @Temporal(TemporalType.TIME)
-	private Date createDateTime;
-	
-    @Temporal(TemporalType.TIME)
-	private Date updateDateTime;
 }
